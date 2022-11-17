@@ -1,65 +1,95 @@
-#include "Bankrekening.h"
+/*Bankrekening
+Gemaakt door: Zubaydah Koelemeij
+Voor C++ beyond the basics
+*/
 
-class Product //hier maak ik mijn product aan
+#include<list>
+#include <string>
+#include <iostream>
+using namespace std;
+
+//Transactie Class, met de hoeveelheid en datum van een product
+class deTransactie 
 {
 public:
-	double amount;
-	string date;
+	double hoeveelheid; //Prijs 
+	string datum; //Datum van het product
 
-	Product(double newAmount, string newDate) 
+	//Constructor van de Transactie class
+	deTransactie(double newHoeveelheid, string nieuwDatum) 
 	{
-		amount = newAmount;
-		date = newDate;
+		hoeveelheid = newHoeveelheid;
+		datum = nieuwDatum;
 	}
-	bool operator ==(const Product& piece) const //vertel ik aan het systeem dat mijn product constant zal zijn en niet veranderd
+	bool operator ==(const deTransactie& piece) const //Hier vertel ik aan het systeem dat mijn product constant zal zijn en niet veranderd
 	{
-		return this->date == piece.date;
+		return this->datum == piece.datum;
 	}
 };
 
-ostream& operator <<(ostream& COUT, Product& productPiece) //zorgt ervoor dat de uiteindelijk variables kan printen met cout
+//Zorgt ervoor dat de uiteindelijk variables kan printen met cout
+ostream& operator <<(ostream& COUT, deTransactie& productPiece) 
 {
-	COUT << "Price: " << productPiece.amount << endl;
-	COUT << "Date: " << productPiece.date << endl;
+	COUT << "Prijs: " << productPiece.hoeveelheid << endl;
+	COUT << "Datum: " << productPiece.datum << endl;
 	return COUT;
 }
 
-class MyCollection //zorgt ervoor dat ik mijn productstukken bij elkaar kan optellen 
+//Bankrekening class met saldo en transactiehistorie 
+class deBankrekening 
 {
 public:
-	list<Product>myPieces;
+	list<deTransactie>myPieces; //Zorgt ervoor dat ik mijn productstukken bij elkaar kan optellen
 
-	void operator+=(Product& piece) 
+	double saldo;
+
+	deBankrekening(double nieuwSaldo)
+	{
+		saldo = nieuwSaldo;
+	}
+
+	void GetInfo() //Functie zodat ik het hoeveelheid saldo kan printen
+	{
+		cout << "Saldo: " << saldo << endl;
+	}
+
+	void operator+=(deTransactie& piece) //telt erbij
 	{
 		this->myPieces.push_back(piece);
+		saldo = saldo + piece.hoeveelheid;
 	}
-	void operator-=(Product& piece)
+	void operator-=(deTransactie& piece) //telt eraf
 	{
-		this->myPieces.remove(piece);
+		deTransactie tempTranactie = deTransactie(-piece.hoeveelheid, piece.datum);
+		this->myPieces.push_back(tempTranactie);
+		saldo = saldo - piece.hoeveelheid;
 	}
 };
 
-ostream& operator<<(ostream& COUT, MyCollection& myCollection) //maakt een lijst met alle product pieces
+//Gebruikt operator overloading zodat een lijst met alle producten gemaakt wordt
+ostream& operator<<(ostream& COUT, deBankrekening& myCollection) 
 {
-	for (Product productPiece : myCollection.myPieces)
+	for (deTransactie productPiece : myCollection.myPieces)
 		COUT << productPiece << endl;
 	return COUT;
 }
 
 int main()
 {
-	Bankrekening account(500); //account object heeft 500 saldo
-	account.GetInfo(); //print het hoeveel saldo
 
-	Product piece1 = Product(9.99, "1998-06-09");
-	Product piece2 = Product(10.99, "2003-10-11");
-	Product piece3 = Product(19.99, "1997-07-03");
-	MyCollection myCollection;
+	deTransactie piece1 = deTransactie(9.99, "06-09-1998"); //Piece(x) zijn stukken, met een prijs en datum
+	deTransactie piece2 = deTransactie(10.99, "10-11-2003");
+	deTransactie piece3 = deTransactie(19.99, "07-03-1997");
+
+	deBankrekening myCollection = deBankrekening(500); //Zet 500 op de saldo
+
 	myCollection += piece1;
 	myCollection += piece2;
 	myCollection -= piece2;
 	myCollection += piece3;
-	cout << myCollection; //print alle producten
+	cout << myCollection; //Print de productiehistorie
+
+	myCollection.GetInfo(); //Print de saldo 
 
 	system("pause>0");
 }

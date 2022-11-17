@@ -1,4 +1,4 @@
-//Transactie class
+/*Transactie class
 
 #pragma once
 #include <string>
@@ -11,4 +11,4 @@ public:
 	string datum;
 
 	Transactie(double aantal, string data);
-};
+};*/
