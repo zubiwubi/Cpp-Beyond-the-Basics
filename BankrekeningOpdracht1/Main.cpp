@@ -81,7 +81,7 @@ int main()
 	deTransactie piece2 = deTransactie(10.99, "10-11-2003");
 	deTransactie piece3 = deTransactie(19.99, "07-03-1997");
 
-	deBankrekening myCollection = deBankrekening(0); //Zet 500 op de saldo
+	deBankrekening myCollection = deBankrekening(0); //Zet 0 op het saldo
 
 	myCollection += piece1;
 	myCollection += piece2;
