@@ -1,17 +1,21 @@
-//Class van de Banrekening 
-/*#pragma once
+#pragma once
 #include "Transactie.h"
-#include<list>
-#include <string>
-#include <iostream>
-using namespace std;
+#include <list>
 
-class Bankrekening //definitie: Hierin is de tranasactie geschiedenis te zien en de Saldo
+
+//Bankrekening class met saldo en transactiehistorie
+class Bankrekening
 {
 public:
+	list<Transactie>myPieces; //Zorgt ervoor dat ik mijn productstukken bij elkaar kan optellen
+
 	double saldo;
 
 	Bankrekening(double nieuwSaldo);
 
-	void GetInfo(); //Print de saldo hoeveelheid
-};*/
+	void GetInfo(); //Functie zodat ik het hoeveelheid saldo kan printen
+
+	void operator+=(Transactie& piece); //telt erbij
+	
+	void operator-=(Transactie& piece); //telt eraf
+};
